@@ -75,7 +75,23 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>4.1.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scripts>
+                        <script>src/main/groovy/ci/ciTasks.groovy</script>
+                    </scripts>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
