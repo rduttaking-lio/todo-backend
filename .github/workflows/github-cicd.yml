@@ -26,4 +26,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run:  mvn org.codehaus.gmavenplus:gmavenplus-plugin:4.1.1:execute
+      run:  mvn gplus:execute
