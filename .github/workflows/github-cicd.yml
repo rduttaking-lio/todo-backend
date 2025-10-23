@@ -12,14 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Groovy (for any standalone Groovy needs)
-        uses: wtfjoke/setup-groovy@v3
-        with:
-          groovy-version: "4.x"
-
-      - name: Verify Groovy
-        run: groovy --version
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -30,6 +22,28 @@ jobs:
       - name: Show mvn version
         run: mvn -v
 
-      # Run the gmavenplus plugin directly (execute configured script)
+      # Optional: install system Groovy (only needed if you plan to run standalone groovy scripts)
+      - name: Install Groovy (optional)
+        if: ${{ always() }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y groovy
+
+      # Optional: run a standalone Groovy script from the repo (only if you have one)
+      - name: Run standalone Groovy script (optional)
+        if: ${{ always() }}
+        run: |
+          # Make sure the script path exists in repo, e.g. src/main/groovy/ci/ciTask.groovy
+          if [ -f src/main/groovy/ci/ciTask.groovy ]; then
+            groovy src/main/groovy/ci/ciTask.groovy
+          else
+            echo "No standalone Groovy script found at src/main/groovy/ci/ciTask.groovy (skipping)"
+          fi
+
+      # Run the gmavenplus plugin goal which executes the script configured in the pom.xml
       - name: Run gmavenplus script (gplus:execute)
         run: mvn -B gplus:execute
+
+      # Run the full Maven build (invokes any lifecycle-bound gmavenplus executions as well)
+      - name: Build with Maven (package)
+        run: mvn -B package --file pom.xml
