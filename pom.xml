@@ -88,6 +88,8 @@
                 <version>4.2.1</version>
                 <executions>
                     <execution>
+                        <id>run-ci-tasks</id>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>execute</goal>
                         </goals>
@@ -97,6 +99,7 @@
                     <scripts>
                         <script>src/main/groovy/ci/ciTasks.groovy</script>
                     </scripts>
+                    <verbose>true</verbose>
                 </configuration>
             </plugin>
         </plugins>
